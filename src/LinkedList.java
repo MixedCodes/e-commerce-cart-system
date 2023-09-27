@@ -11,10 +11,11 @@ public class LinkedList<E> implements List<E> {
 		if (isEmpty()) {
 			this.front = node;
 		} else {
-			Node<E> last = this.front;
-			while (last.getNext() != null) {
-				last = last.getNext();
-			}
+			Node<E> last = this.getLast();
+//			Node<E> last = this.front;
+//			while (last.getNext() != null) {
+//				last = last.getNext();
+//			}
 			last.setNext(node);
 		}
 	}
@@ -82,16 +83,23 @@ public class LinkedList<E> implements List<E> {
 	public boolean remove(E data) {
 		boolean removed = false;
 		
-		if (!isEmpty()) {
-			Node<E> node = this.front;
-			while (node.getNext() != null) {
-				if (node.getNext().getData().equals(data)) {
-					node.setNext(node.getNext().getNext());
-					
-					removed = true;
-				}
-				node = node.getNext();
-			}
+//		if (!isEmpty()) {
+//			Node<E> node = this.front;
+//			while (node.getNext() != null) {
+//				if (node.getNext().getData().equals(data)) {
+//					node.setNext(node.getNext().getNext());
+//					
+//					removed = true;
+//					return removed;
+//				}
+//				node = node.getNext();
+//			}
+	
+//		}
+		int index = this.indexOf(data);
+		if (index != -1) {
+			this.remove(index);
+			removed = true;
 		}
 		
 		return removed;
@@ -131,8 +139,40 @@ public class LinkedList<E> implements List<E> {
 		return this.front == null;
 	}
 	
+	public int indexOf(E data) {
+		int index = 0;
+		
+		if (data == null) {
+			for (Node<E> node = this.front; node != null; node = node.getNext()) {
+	            if (node.getData() == null) {
+	            	return index;
+	            }
+	            index++;
+	        }
+        } else {
+        	for (Node<E> node = this.front; node != null; node = node.getNext()) {
+                if (data.equals(node.getData())) {
+                	return index;
+                }
+                index++;
+            }
+        }
+		
+		return -1;
+	}
+	
 	public Node<E> getFront() {
 		return this.front;
+	}
+	
+	public Node<E> getLast() {
+		Node<E> last = this.front;
+		
+		for (Node<E> node = this.front; node != null; node = node.getNext()) {
+			last = node;
+		}
+		
+		return last;
 	}
 	
 	public Node<E> getElement(int index) {
@@ -150,17 +190,19 @@ public class LinkedList<E> implements List<E> {
 		return node;	
 	}
 	
+	@Override
 	public String toString()
     {
         StringBuilder string = new StringBuilder("[");
+        
         for (Node<E> node = this.front; node != null; node = node.getNext()) {
             string.append(node.getData());
             if (node.getNext() != null) {
                 string.append(", ");
             }
         }
-        
         string.append("]");
+        
         return string.toString();
     }
 	
