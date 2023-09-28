@@ -83,19 +83,6 @@ public class LinkedList<E> implements List<E> {
 	public boolean remove(E data) {
 		boolean removed = false;
 		
-//		if (!isEmpty()) {
-//			Node<E> node = this.front;
-//			while (node.getNext() != null) {
-//				if (node.getNext().getData().equals(data)) {
-//					node.setNext(node.getNext().getNext());
-//					
-//					removed = true;
-//					return removed;
-//				}
-//				node = node.getNext();
-//			}
-	
-//		}
 		int index = this.indexOf(data);
 		if (index != -1) {
 			this.remove(index);
@@ -135,9 +122,7 @@ public class LinkedList<E> implements List<E> {
 		return count;
 	}
 	
-	public boolean isEmpty() {
-		return this.front == null;
-	}
+	public boolean isEmpty() {return this.front == null;}
 	
 	public int indexOf(E data) {
 		int index = 0;
@@ -151,7 +136,7 @@ public class LinkedList<E> implements List<E> {
 	        }
         } else {
         	for (Node<E> node = this.front; node != null; node = node.getNext()) {
-                if (data.equals(node.getData())) {
+                if (node.getData().equals(data)) {
                 	return index;
                 }
                 index++;

@@ -47,6 +47,10 @@ public class ArrayList<E> implements List<E> {
         elements[index] = element;
     }
 	
+    public int size() {return this.size;}
+
+    public boolean isEmpty() {return this.size == 0;}
+    
 	private int indexOf(Object element) {
         if (element == null) {
             for (int i = 0; i < this.size; i++) {
@@ -56,7 +60,7 @@ public class ArrayList<E> implements List<E> {
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (element.equals(this.elements[i])) {
+                if (this.elements[i].equals(element)) {
                     return i;
                 }
             }
@@ -64,16 +68,6 @@ public class ArrayList<E> implements List<E> {
         return -1;
     }
 	
-    public int size()
-    {
-        return this.size;
-    }
-
-    public boolean isEmpty()
-    {
-        return this.size == 0;
-    }
-    
 	public void ensureCapacity(int minCapacity) {
 		if (minCapacity > this.elements.length) {
             int newCapacity = this.elements.length * 2;
