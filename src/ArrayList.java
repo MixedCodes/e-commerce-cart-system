@@ -1,18 +1,18 @@
 
 public class ArrayList<E> implements List<E> {
 	private static final int DEFAULT_CAPACITY  = 10;
-	private Object[] elements;
+	private E[] elements;
 	private int size;
 	
 	public ArrayList(int capacity) {
 		if (capacity < 0) {throw new IllegalArgumentException("Invalid initial capacity: " + capacity);}
-		this.elements = new Object[capacity];
+		this.elements = (E[]) new Object[capacity];
 		this.size = 0;
 	}
 	
-	public ArrayList(Object[] elements) {
+	public ArrayList(E[] elements) {
 		this.size = elements.length;
-		this.elements = new Object[this.size];
+		this.elements = (E[]) new Object[this.size];
 		for (int i = 0; i < this.size; i++) {
 			this.elements[i] = elements[i];
 		}
@@ -20,23 +20,27 @@ public class ArrayList<E> implements List<E> {
 	
 	public ArrayList() {this(DEFAULT_CAPACITY);}
 	
-	public Object get(int index) {
-		checkIndex(index);
+	public E get(int index) {
+		this.checkIndex(index);
 		return elements[index];
 	}
 	
-	public void set(int index, Object element) {
-        checkIndex(index);
+	public int size() {return this.size;}
+
+    public boolean isEmpty() {return this.size == 0;}
+	
+	public void set(int index, E element) {
+        this.checkIndex(index);
         elements[index] = element;
     }
 	
-	public void add(Object element) {
+	public void add(E element) {
 		this.ensureCapacity(this.size + 1);
 		this.elements[this.size++] = element;
 	}
 
 	public void remove(int index) {
-        checkIndex(index);
+        this.checkIndex(index);
         
         int size = this.size - index - 1;
         if (size > 0) {
@@ -45,18 +49,16 @@ public class ArrayList<E> implements List<E> {
         elements[--this.size] = null;
     }
 	
-	public void remove(Object element) {
+	public void remove(E element) {
 		int index = this.indexOf(element);
 		if (index != -1) {
 			this.remove(index);
 		}
 	}
 	
-    public int size() {return this.size;}
-
-    public boolean isEmpty() {return this.size == 0;}
+	public void clear() {elements = (E[]) new Object[DEFAULT_CAPACITY];}
     
-	private int indexOf(Object element) {
+	private int indexOf(E element) {
         if (element == null) {
             for (int i = 0; i < this.size; i++) {
                 if (this.elements[i] == null) {
@@ -80,7 +82,7 @@ public class ArrayList<E> implements List<E> {
                 newCapacity = minCapacity;
             }
             
-            Object newElements[] = new Object[newCapacity];
+            E newElements[] = (E[]) new Object[newCapacity];
             for (int i = 0; i < this.size; i++) {
             	newElements[i] = this.elements[i];
             }
