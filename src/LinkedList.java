@@ -5,6 +5,36 @@ public class LinkedList<E> implements List<E> {
 	public LinkedList() {this.front = null;}
 	public LinkedList(Node<E> node) {this.front = node;}
 	
+	
+	public Node<E> getFront() {
+		return this.front;
+	}
+	
+	public Node<E> getLast() {
+		Node<E> last = this.front;
+		
+		for (Node<E> node = this.front; node != null; node = node.getNext()) {
+			last = node;
+		}
+		
+		return last;
+	}
+	
+	public Node<E> get(int index) {
+		Node<E> node = null;
+		
+		if (index > this.size() - 1 || index < 0) {
+			throw new IndexOutOfBoundsException(index);
+		}
+		
+		node = this.front;
+		for (int i = 0; i < index; i++) {
+			node = node.getNext();
+		}
+		
+		return node;	
+	}
+	
 	public void add(E data) {
 		Node<E> node = new Node<E>(data);
 		
@@ -31,11 +61,11 @@ public class LinkedList<E> implements List<E> {
 			node.setNext(this.front);
 			this.front = node;
 		} else if (index < this.size()) {
-			node.setNext(this.getElement(index));
-			Node<E> previous = this.getElement(index - 1);
+			node.setNext(this.get(index));
+			Node<E> previous = this.get(index - 1);
 			previous.setNext(node);
 		} else if (index > 0) {
-			Node<E> previous = this.getElement(index - 1);
+			Node<E> previous = this.get(index - 1);
 			previous.setNext(node);
 		}
 	}
@@ -49,11 +79,11 @@ public class LinkedList<E> implements List<E> {
 			node.setNext(this.front);
 			this.front = node;
 		} else if (index < this.size()) {
-			node.setNext(this.getElement(index));
-			Node<E> previous = this.getElement(index - 1);
+			node.setNext(this.get(index));
+			Node<E> previous = this.get(index - 1);
 			previous.setNext(node);
 		} else if (index > 0) {
-			Node<E> previous = this.getElement(index - 1);
+			Node<E> previous = this.get(index - 1);
 			previous.setNext(node);
 		}
 	}
@@ -72,7 +102,7 @@ public class LinkedList<E> implements List<E> {
 //			for (int i = 0; i < index - 2; i++) {
 //				previous = previous.getNext();
 //			}
-			Node<E> previous = getElement(index - 1);
+			Node<E> previous = get(index - 1);
 			removed = previous.getNext();
 			previous.setNext(previous.getNext().getNext());
 		}
@@ -144,35 +174,6 @@ public class LinkedList<E> implements List<E> {
         }
 		
 		return -1;
-	}
-	
-	public Node<E> getFront() {
-		return this.front;
-	}
-	
-	public Node<E> getLast() {
-		Node<E> last = this.front;
-		
-		for (Node<E> node = this.front; node != null; node = node.getNext()) {
-			last = node;
-		}
-		
-		return last;
-	}
-	
-	public Node<E> getElement(int index) {
-		Node<E> node = null;
-		
-		if (index > this.size() - 1 || index < 0) {
-			throw new IndexOutOfBoundsException(index);
-		}
-		
-		node = this.front;
-		for (int i = 0; i < index; i++) {
-			node = node.getNext();
-		}
-		
-		return node;	
 	}
 	
 	@Override

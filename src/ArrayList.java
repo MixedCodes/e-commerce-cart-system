@@ -20,6 +20,16 @@ public class ArrayList<E> implements List<E> {
 	
 	public ArrayList() {this(DEFAULT_CAPACITY);}
 	
+	public Object get(int index) {
+		checkIndex(index);
+		return elements[index];
+	}
+	
+	public void set(int index, Object element) {
+        checkIndex(index);
+        elements[index] = element;
+    }
+	
 	public void add(Object element) {
 		this.ensureCapacity(this.size + 1);
 		this.elements[this.size++] = element;
@@ -41,11 +51,6 @@ public class ArrayList<E> implements List<E> {
 			this.remove(index);
 		}
 	}
-	
-	public void set(int index, Object element) {
-        checkIndex(index);
-        elements[index] = element;
-    }
 	
     public int size() {return this.size;}
 
