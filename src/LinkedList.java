@@ -25,83 +25,68 @@ public class LinkedList<E> implements List<E> {
 	}
 	
 	public Node<E> getNode(int index) {
+		this.checkIndex(index);
+		
 		Node<E> node = null;
-		
-		if (index > this.size() - 1 || index < 0) {
-			throw new IndexOutOfBoundsException(index);
-		}
-		
 		node = this.front;
 		for (int i = 0; i < index; i++) {
 			node = node.getNext();
 		}
-		
+				
 		return node;	
 	}
 	
-	public void add(E data) {
+	public boolean add(E data) {
+		boolean added = false;
+				
 		Node<E> node = new Node<E>(data);
 		
 		if (isEmpty()) {
 			this.front = node;
+			added = true;
 		} else {
 			Node<E> last = this.getLast();
-//			Node<E> last = this.front;
-//			while (last.getNext() != null) {
-//				last = last.getNext();
-//			}
 			last.setNext(node);
+			added = true;
 		}
+		
+		return added;
 	}
 	
-	public void add(E data, int index) {
+	public boolean add(E data, int index) {		
 		Node<E> node = new Node<E>(data);
-		
-		this.checkIndex(index);
-		
-		if (index == 0) {
-			node.setNext(this.front);
-			this.front = node;
-		} else if (index < this.size()) {
-			node.setNext(this.getNode(index));
-			Node<E> previous = this.getNode(index - 1);
-			previous.setNext(node);
-		} else if (index > 0) {
-			Node<E> previous = this.getNode(index - 1);
-			previous.setNext(node);
-		}
+		return(this.add(node, index));
 	}
 	
-	public void add(Node<E> node, int index) {
-		this.checkIndex(index);
-		
+	public boolean add(Node<E> node, int index) {
+		boolean added = false;
+		if (index < 0 || index >= this.size() + 2) {
+			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size());
+		}
+        
 		if (index == 0) {
 			node.setNext(this.front);
 			this.front = node;
+			added = true;
 		} else if (index < this.size()) {
 			node.setNext(this.getNode(index));
-			Node<E> previous = this.getNode(index - 1);
-			previous.setNext(node);
-		} else if (index > 0) {
-			Node<E> previous = this.getNode(index - 1);
-			previous.setNext(node);
+			this.getNode(index - 1).setNext(node);
+		} else if (index >= this.size()) {
+			node.setNext(null);
+			this.getNode(index - 1).setNext(node);
+			added = true;
 		}
+		return added;
 	}
 	
 	public Node<E> remove(int index) {
 		Node<E> removed = null;
-		
-		if (index < 0 || index > this.size() - 1) {
-			throw new IndexOutOfBoundsException(index);
-		}
+		this.checkIndex(index);
 		
 		if (index == 0) {
+			removed = this.front;
 			this.front = this.front.getNext();
 		} else if (index > 0) {
-//			Node<E> previous = this.front;		
-//			for (int i = 0; i < index - 2; i++) {
-//				previous = previous.getNext();
-//			}
 			Node<E> previous = this.getNode(index - 1);
 			removed = previous.getNext();
 			previous.setNext(previous.getNext().getNext());
@@ -122,29 +107,30 @@ public class LinkedList<E> implements List<E> {
 		return removed;
 	}
 	
-	public void changeOrder(int firstIndex, int secondIndex) {
-		if (firstIndex == secondIndex) {return;}
-		if (firstIndex < 0 || firstIndex > this.size() - 1) {
-			throw new IndexOutOfBoundsException("The first index " + firstIndex + " is out of bound");
+	public boolean changeOrder(int firstIndex, int secondIndex) {
+		boolean changed = false;
+		if (firstIndex == secondIndex) {
+			changed = false;
+			return changed;
 		}
-		if (secondIndex < 0 || secondIndex > this.size() - 1) {
-			throw new IndexOutOfBoundsException("The second index " + secondIndex + " is out of bound");
-		}
+		this.checkIndex(firstIndex);
+		this.checkIndex(secondIndex);
 		
 		int min = Math.min(firstIndex, secondIndex);
 	    int max = Math.max(firstIndex, secondIndex);
-
+	    
 	    this.add(this.remove(min), max);
 	    this.add(this.remove(max - 1), min);
-		
+	    changed = true;
+	    
+	    return changed;
 	}
 	
 	public int size() {
 		int count = 0;
 		
 		if (!isEmpty()) {
-			count = 1;
-			for (Node<E> node = this.front; node != null; node = node.getNext()) {
+ 			for (Node<E> node = this.front; node != null; node = node.getNext()) {
 				count++;
 			}
 		}
@@ -178,9 +164,13 @@ public class LinkedList<E> implements List<E> {
 		return -1;
 	}
 	
+	public boolean contains(E data) {
+        return this.indexOf(data) != -1;
+    }
+	
 	private void checkIndex(int index) {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size());
+            throw new IndexOutOfBoundsException("Index out of bounds. Index: " + index + ", Size: " + this.size());
         }
     }
 	

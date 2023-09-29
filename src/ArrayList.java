@@ -66,7 +66,7 @@ public class ArrayList<E> implements List<E> {
                 }
             }
         } else {
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < this.size; i++) {
                 if (this.elements[i].equals(element)) {
                     return i;
                 }
@@ -92,7 +92,7 @@ public class ArrayList<E> implements List<E> {
 	}
 	
 	private void checkIndex(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
     }
@@ -101,9 +101,9 @@ public class ArrayList<E> implements List<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
         
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.size; i++) {
             sb.append(elements[i]);
-            if (i < size - 1) {
+            if (i < this.size - 1) {
                 sb.append(", ");
             }
         }
